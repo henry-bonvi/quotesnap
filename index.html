@@ -609,7 +609,7 @@
             const tips = document.getElementById('tips');
             const tipsList = [];
             if (currentRate < avg) {
-                tipsList.push('Raise your rate by $5-10/hr — most customers won't even notice, but it adds up to thousands per year.');
+                tipsList.push("Raise your rate by $5-10/hr — most customers won't even notice, but it adds up to thousands per year.");
                 tipsList.push('Stop giving "mates rates" to people you barely know. Your time has value.');
             }
             tipsList.push('Quote fast — the first tradie to quote wins 60% of jobs. Speed = money.');
@@ -620,7 +620,7 @@
             if (years >= 10) {
                 tipsList.push(`With ${years} years experience, you should be charging a premium. Don't compete on price — compete on trust.`);
             }
-            tipsList.push('Track your quote-to-win ratio. If you're winning 80%+, your prices are too low.');
+            tipsList.push("Track your quote-to-win ratio. If you're winning 80%+, your prices are too low.");
             tips.innerHTML = tipsList.slice(0, 5).map(t => `<li class="flex items-start gap-2"><span class="mt-0.5">→</span><span>${t}</span></li>`).join('');
 
             // Smooth scroll to results
