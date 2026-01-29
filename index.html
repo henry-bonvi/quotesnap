@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuoteSnap — Turn Job Photos Into Professional Quotes in 60 Seconds</title>
+    <meta name="description" content="Stop wasting hours on quotes. Snap a photo of the job, and QuoteSnap's AI generates a professional quote with materials, labour, and pricing. Send it to your customer before you leave the site.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📸</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer data-domain="quotesnap.netlify.app" src="https://plausible.io/js/script.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        },
+                        accent: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #3b82f6 100%); }
+        .glass { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
+        .calc-card { background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); }
+        .pulse-glow { animation: pulse-glow 2s ease-in-out infinite alternate; }
+        @keyframes pulse-glow { from { box-shadow: 0 0 20px rgba(59,130,246,0.3); } to { box-shadow: 0 0 40px rgba(59,130,246,0.6); } }
+        .fade-in { opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        .result-bar { transition: width 1s ease-out; }
+        input[type="range"] { -webkit-appearance: none; appearance: none; height: 8px; border-radius: 4px; background: #e2e8f0; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; border-radius: 50%; background: #2563eb; cursor: pointer; box-shadow: 0 2px 6px rgba(37,99,235,0.4); }
+    </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl">📸</span>
+                <span class="text-xl font-bold text-gray-900">Quote<span class="text-brand-600">Snap</span></span>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="#calculator" class="hidden sm:inline text-sm font-medium text-gray-600 hover:text-brand-600 transition">Free Rate Calculator</a>
+                <a href="#waitlist" class="bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-brand-700 transition shadow-md shadow-brand-600/20">Join Waitlist</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg pt-32 pb-20 px-4 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23ffffff%22 fill-opacity=%220.05%22%3E%3Cpath d=%22M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
+        <div class="max-w-4xl mx-auto text-center relative">
+            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-8">
+                <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                <span class="text-white/90 text-sm font-medium">Early access — launching Q1 2026</span>
+            </div>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
+                Turn Job Photos Into<br>
+                <span class="text-accent-400">Professional Quotes</span><br>
+                in 60 Seconds
+            </h1>
+            <p class="text-lg sm:text-xl text-blue-100 max-w-2xl mx-auto mb-10 leading-relaxed">
+                Stop wasting hours typing up quotes at your kitchen table. Snap a photo of the job, and QuoteSnap's AI generates a branded quote with materials, labour, and pricing. Send it before you leave the site.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#waitlist" class="bg-accent-500 hover:bg-accent-600 text-gray-900 px-8 py-4 rounded-xl text-lg font-bold transition shadow-lg shadow-accent-500/30 pulse-glow">
+                    🚀 Get Early Access — Free
+                </a>
+                <a href="#calculator" class="glass text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-white/20 transition">
+                    📊 Try the Rate Calculator
+                </a>
+            </div>
+            <p class="text-blue-200/70 text-sm mt-4">No credit card required · Be first when we launch</p>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="py-20 px-4 bg-gray-50">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">Sound Familiar?</h2>
+                <p class="text-gray-500 text-lg">Every tradie we talked to said the same thing...</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 fade-in">
+                    <div class="text-4xl mb-4">😤</div>
+                    <h3 class="text-xl font-bold mb-3">"I spend 2 hours every night on quotes"</h3>
+                    <p class="text-gray-500">You're knackered after a full day on the tools, and now you've got to sit down and type up 5 quotes. Half of them won't even convert.</p>
+                </div>
+                <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 fade-in">
+                    <div class="text-4xl mb-4">💸</div>
+                    <h3 class="text-xl font-bold mb-3">"I lose jobs because I'm too slow"</h3>
+                    <p class="text-gray-500">The customer called 3 tradies. The one who quotes first usually wins. But you're still doing quotes from 3 days ago.</p>
+                </div>
+                <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 fade-in">
+                    <div class="text-4xl mb-4">🤷</div>
+                    <h3 class="text-xl font-bold mb-3">"Am I even charging the right price?"</h3>
+                    <p class="text-gray-500">You've been charging the same rate for 2 years. Material costs went up 15% but you're scared to raise prices and lose customers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-20 px-4">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">How QuoteSnap Works</h2>
+                <p class="text-gray-500 text-lg">Three steps. One minute. Done.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-12">
+                <div class="text-center fade-in">
+                    <div class="w-20 h-20 bg-brand-100 rounded-2xl flex items-center justify-center text-4xl mx-auto mb-6">📱</div>
+                    <div class="text-brand-600 font-bold text-sm uppercase tracking-wider mb-2">Step 1</div>
+                    <h3 class="text-xl font-bold mb-3">Snap the Job</h3>
+                    <p class="text-gray-500">Take a photo of the job site from your phone. Add a quick voice note if you want — "broken tap, needs replacing, standard chrome."</p>
+                </div>
+                <div class="text-center fade-in">
+                    <div class="w-20 h-20 bg-brand-100 rounded-2xl flex items-center justify-center text-4xl mx-auto mb-6">🤖</div>
+                    <div class="text-brand-600 font-bold text-sm uppercase tracking-wider mb-2">Step 2</div>
+                    <h3 class="text-xl font-bold mb-3">AI Does the Work</h3>
+                    <p class="text-gray-500">QuoteSnap identifies the job type, calculates materials and labour, applies your rates, and generates a professional branded PDF.</p>
+                </div>
+                <div class="text-center fade-in">
+                    <div class="w-20 h-20 bg-brand-100 rounded-2xl flex items-center justify-center text-4xl mx-auto mb-6">✉️</div>
+                    <div class="text-brand-600 font-bold text-sm uppercase tracking-wider mb-2">Step 3</div>
+                    <h3 class="text-xl font-bold mb-3">Send & Win</h3>
+                    <p class="text-gray-500">Review, tweak if needed, and SMS/email the quote to your customer. Be the first to quote and win more jobs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FREE TOOL: Tradie Rate Calculator -->
+    <section id="calculator" class="py-20 px-4 bg-gray-50">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-12 fade-in">
+                <div class="inline-flex items-center gap-2 bg-green-100 text-green-700 rounded-full px-4 py-2 text-sm font-semibold mb-4">
+                    🎁 100% FREE TOOL
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">Tradie Rate Calculator</h2>
+                <p class="text-gray-500 text-lg">Are you charging what you're worth? Find out in 30 seconds.</p>
+            </div>
+
+            <div class="calc-card rounded-3xl p-8 sm:p-10 shadow-lg border border-gray-200 fade-in">
+                <form id="calcForm" class="space-y-8">
+                    <!-- Trade Selection -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">What's your trade?</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="tradeGrid">
+                            <button type="button" data-trade="plumber" class="trade-btn bg-white border-2 border-gray-200 rounded-xl p-3 text-center hover:border-brand-500 transition font-medium text-sm">
+                                🔧 Plumber
+                            </button>
+                            <button type="button" data-trade="electrician" class="trade-btn bg-white border-2 border-gray-200 rounded-xl p-3 text-center hover:border-brand-500 transition font-medium text-sm">
+                                ⚡ Electrician
+                            </button>
+                            <button type="button" data-trade="carpenter" class="trade-btn bg-white border-2 border-gray-200 rounded-xl p-3 text-center hover:border-brand-500 transition font-medium text-sm">
+                                🪚 Carpenter
+                            </button>
+                            <button type="button" data-trade="landscaper" class="trade-btn bg-white border-2 border-gray-200 rounded-xl p-3 text-center hover:border-brand-500 transition font-medium text-sm">
+                                🌿 Landscaper
+                            </button>
+                            <button type="button" data-trade="painter" class="trade-btn bg-white border-2 border-gray-200 rounded-xl p-3 text-center hover:border-brand-500 transition font-medium text-sm">
+                                🎨 Painter
+                            </button>
+                            <button type="button" data-trade="builder" class="trade-btn bg-white border-2 border-gray-200 rounded-xl p-3 text-center hover:border-brand-500 transition font-medium text-sm">
+                                🏗️ Builder
+                            </button>
+                            <button type="button" data-trade="cleaner" class="trade-btn bg-white border-2 border-gray-200 rounded-xl p-3 text-center hover:border-brand-500 transition font-medium text-sm">
+                                🧹 Cleaner
+                            </button>
+                            <button type="button" data-trade="hvac" class="trade-btn bg-white border-2 border-gray-200 rounded-xl p-3 text-center hover:border-brand-500 transition font-medium text-sm">
+                                ❄️ HVAC
+                            </button>
+                            <button type="button" data-trade="roofer" class="trade-btn bg-white border-2 border-gray-200 rounded-xl p-3 text-center hover:border-brand-500 transition font-medium text-sm">
+                                🏠 Roofer
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Location -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">Where do you work?</label>
+                        <select id="location" class="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 text-sm font-medium focus:border-brand-500 focus:ring-0 outline-none transition">
+                            <option value="">Select your region...</option>
+                            <option value="sydney">Sydney / NSW</option>
+                            <option value="melbourne">Melbourne / VIC</option>
+                            <option value="brisbane">Brisbane / QLD</option>
+                            <option value="perth">Perth / WA</option>
+                            <option value="adelaide">Adelaide / SA</option>
+                            <option value="hobart">Hobart / TAS</option>
+                            <option value="darwin">Darwin / NT</option>
+                            <option value="canberra">Canberra / ACT</option>
+                            <option value="regional">Regional / Rural</option>
+                        </select>
+                    </div>
+
+                    <!-- Experience -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">Years of experience: <span id="expValue" class="text-brand-600">5</span></label>
+                        <input type="range" id="experience" min="1" max="30" value="5" class="w-full">
+                        <div class="flex justify-between text-xs text-gray-400 mt-1">
+                            <span>1 yr</span>
+                            <span>15 yrs</span>
+                            <span>30 yrs</span>
+                        </div>
+                    </div>
+
+                    <!-- Current Rate -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">Your current hourly rate ($AUD)</label>
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-semibold">$</span>
+                            <input type="number" id="currentRate" placeholder="e.g. 85" class="w-full bg-white border-2 border-gray-200 rounded-xl pl-8 pr-4 py-3 text-sm font-medium focus:border-brand-500 focus:ring-0 outline-none transition" min="20" max="500">
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">/hour</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="calcBtn" class="w-full bg-brand-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-brand-700 transition shadow-lg shadow-brand-600/20 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        📊 Calculate My Market Rate
+                    </button>
+                </form>
+
+                <!-- Results -->
+                <div id="results" class="hidden mt-10 space-y-6">
+                    <div class="border-t border-gray-200 pt-8">
+                        <h3 class="text-2xl font-bold mb-6 text-center">Your Rate Report</h3>
+
+                        <!-- Rate Comparison -->
+                        <div class="bg-white rounded-2xl p-6 border border-gray-200 mb-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-sm font-semibold text-gray-500">MARKET RATE RANGE</span>
+                                <span id="marketRange" class="text-sm font-bold text-brand-600"></span>
+                            </div>
+                            <div class="relative h-8 bg-gray-100 rounded-full overflow-hidden mb-4">
+                                <div id="rangeBar" class="absolute inset-y-0 left-0 bg-gradient-to-r from-red-400 via-green-400 to-blue-400 rounded-full result-bar" style="width: 0%"></div>
+                                <div id="yourMarker" class="absolute top-1/2 -translate-y-1/2 w-6 h-6 bg-gray-900 rounded-full border-2 border-white shadow-lg transition-all duration-1000" style="left: 0%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-gray-400">
+                                <span id="lowRate">$0</span>
+                                <span>Average</span>
+                                <span id="highRate">$0</span>
+                            </div>
+                        </div>
+
+                        <!-- Verdict -->
+                        <div id="verdict" class="rounded-2xl p-6 text-center mb-6"></div>
+
+                        <!-- Stats -->
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="bg-white rounded-xl p-5 border border-gray-200 text-center">
+                                <div class="text-3xl font-black text-brand-600" id="annualDiff">$0</div>
+                                <div class="text-sm text-gray-500 mt-1" id="annualLabel">potential per year</div>
+                            </div>
+                            <div class="bg-white rounded-xl p-5 border border-gray-200 text-center">
+                                <div class="text-3xl font-black text-brand-600" id="percentile">0th</div>
+                                <div class="text-sm text-gray-500 mt-1">market percentile</div>
+                            </div>
+                        </div>
+
+                        <!-- Tips -->
+                        <div class="bg-brand-50 rounded-2xl p-6 border border-brand-100">
+                            <h4 class="font-bold text-brand-800 mb-3">💡 Quick Tips to Charge More</h4>
+                            <ul id="tips" class="space-y-2 text-sm text-brand-700"></ul>
+                        </div>
+                    </div>
+
+                    <!-- CTA after results -->
+                    <div class="bg-gray-900 rounded-2xl p-8 text-center">
+                        <h3 class="text-xl font-bold text-white mb-3">Want to win more quotes AND charge more?</h3>
+                        <p class="text-gray-400 mb-6">QuoteSnap helps you send professional quotes in 60 seconds, so you quote first and win the job — at the right price.</p>
+                        <a href="#waitlist" class="inline-block bg-accent-500 text-gray-900 px-8 py-3 rounded-xl font-bold hover:bg-accent-600 transition">Join the Waitlist →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="py-20 px-4">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">Built for Tradies, Not Corporates</h2>
+                <p class="text-gray-500 text-lg">No training needed. If you can take a photo, you can use QuoteSnap.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="flex gap-4 p-6 rounded-2xl bg-gray-50 fade-in">
+                    <div class="text-3xl">🧠</div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-2">AI-Powered Pricing</h3>
+                        <p class="text-gray-500 text-sm">Uses real market data to calculate fair pricing for materials and labour. Never under-quote again.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 p-6 rounded-2xl bg-gray-50 fade-in">
+                    <div class="text-3xl">🎨</div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-2">Your Brand, Your Quote</h3>
+                        <p class="text-gray-500 text-sm">Professional PDF with your logo, ABN, terms, and contact details. Look like a proper business.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 p-6 rounded-2xl bg-gray-50 fade-in">
+                    <div class="text-3xl">⚡</div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-2">Quote First, Win More</h3>
+                        <p class="text-gray-500 text-sm">Send quotes within minutes of visiting the site. First to quote = first to win.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 p-6 rounded-2xl bg-gray-50 fade-in">
+                    <div class="text-3xl">📊</div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-2">Track Your Win Rate</h3>
+                        <p class="text-gray-500 text-sm">See which quotes convert, which don't, and why. Data-driven quoting means more money.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 p-6 rounded-2xl bg-gray-50 fade-in">
+                    <div class="text-3xl">📱</div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-2">Works on Your Phone</h3>
+                        <p class="text-gray-500 text-sm">No laptop needed. Do everything from your phone in the ute between jobs.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 p-6 rounded-2xl bg-gray-50 fade-in">
+                    <div class="text-3xl">🔗</div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-2">Instant SMS & Email</h3>
+                        <p class="text-gray-500 text-sm">One tap to send the quote via SMS or email. Customer gets a beautiful, clickable quote.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Preview -->
+    <section class="py-20 px-4 bg-gray-50">
+        <div class="max-w-3xl mx-auto text-center fade-in">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4">Simple Pricing (Coming Soon)</h2>
+            <p class="text-gray-500 text-lg mb-12">Less than what you'd charge for one hour of work.</p>
+            <div class="bg-white rounded-3xl p-10 shadow-lg border border-gray-200 max-w-md mx-auto">
+                <div class="text-brand-600 font-bold text-sm uppercase tracking-wider mb-2">Pro Plan</div>
+                <div class="flex items-baseline justify-center gap-1 mb-4">
+                    <span class="text-5xl font-black">$29</span>
+                    <span class="text-gray-400 font-medium">/month</span>
+                </div>
+                <ul class="text-left space-y-3 mb-8">
+                    <li class="flex items-center gap-3 text-sm">
+                        <span class="text-green-500 text-lg">✓</span>
+                        <span>Unlimited AI-powered quotes</span>
+                    </li>
+                    <li class="flex items-center gap-3 text-sm">
+                        <span class="text-green-500 text-lg">✓</span>
+                        <span>Custom branding (logo, ABN, terms)</span>
+                    </li>
+                    <li class="flex items-center gap-3 text-sm">
+                        <span class="text-green-500 text-lg">✓</span>
+                        <span>SMS & email delivery</span>
+                    </li>
+                    <li class="flex items-center gap-3 text-sm">
+                        <span class="text-green-500 text-lg">✓</span>
+                        <span>Quote tracking & win rate analytics</span>
+                    </li>
+                    <li class="flex items-center gap-3 text-sm">
+                        <span class="text-green-500 text-lg">✓</span>
+                        <span>Material & labour cost database</span>
+                    </li>
+                    <li class="flex items-center gap-3 text-sm">
+                        <span class="text-green-500 text-lg">✓</span>
+                        <span>Phone support (talk to a human)</span>
+                    </li>
+                </ul>
+                <a href="#waitlist" class="block bg-brand-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-brand-700 transition shadow-lg shadow-brand-600/20">
+                    Join Waitlist — Get 50% Off Launch Price
+                </a>
+                <p class="text-xs text-gray-400 mt-3">Early supporters get locked in at $14.50/mo forever</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Waitlist Section -->
+    <section id="waitlist" class="py-20 px-4 gradient-bg relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23ffffff%22 fill-opacity=%220.05%22%3E%3Cpath d=%22M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
+        <div class="max-w-xl mx-auto text-center relative">
+            <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Be First in Line</h2>
+            <p class="text-blue-100 text-lg mb-8">Join the waitlist and lock in 50% off when we launch. Plus, get the free Tradie Rate Calculator PDF guide.</p>
+
+            <form id="waitlistForm" class="space-y-4">
+                <input type="text" id="wlName" placeholder="Your name" required class="w-full bg-white/10 backdrop-blur-sm border border-white/30 rounded-xl px-5 py-4 text-white placeholder-blue-200 font-medium focus:bg-white/20 focus:border-white/50 outline-none transition">
+                <input type="email" id="wlEmail" placeholder="Your best email" required class="w-full bg-white/10 backdrop-blur-sm border border-white/30 rounded-xl px-5 py-4 text-white placeholder-blue-200 font-medium focus:bg-white/20 focus:border-white/50 outline-none transition">
+                <select id="wlTrade" class="w-full bg-white/10 backdrop-blur-sm border border-white/30 rounded-xl px-5 py-4 text-blue-200 font-medium focus:bg-white/20 focus:border-white/50 outline-none transition">
+                    <option value="" class="text-gray-900">What trade are you in?</option>
+                    <option value="plumber" class="text-gray-900">Plumber</option>
+                    <option value="electrician" class="text-gray-900">Electrician</option>
+                    <option value="carpenter" class="text-gray-900">Carpenter</option>
+                    <option value="landscaper" class="text-gray-900">Landscaper</option>
+                    <option value="painter" class="text-gray-900">Painter</option>
+                    <option value="builder" class="text-gray-900">Builder</option>
+                    <option value="cleaner" class="text-gray-900">Cleaner</option>
+                    <option value="hvac" class="text-gray-900">HVAC</option>
+                    <option value="roofer" class="text-gray-900">Roofer</option>
+                    <option value="other" class="text-gray-900">Other</option>
+                </select>
+                <button type="submit" class="w-full bg-accent-500 hover:bg-accent-600 text-gray-900 py-4 rounded-xl font-bold text-lg transition shadow-lg">
+                    🎯 Join the Waitlist — It's Free
+                </button>
+            </form>
+            <div id="waitlistSuccess" class="hidden">
+                <div class="bg-green-500/20 backdrop-blur-sm border border-green-400/30 rounded-2xl p-8">
+                    <div class="text-5xl mb-4">🎉</div>
+                    <h3 class="text-2xl font-bold text-white mb-2">You're on the list!</h3>
+                    <p class="text-green-200">We'll email you when QuoteSnap is ready. You've locked in 50% off the launch price.</p>
+                </div>
+            </div>
+            <p class="text-blue-200/50 text-xs mt-4">We respect your inbox. No spam, just launch updates.</p>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="py-20 px-4">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+            <div class="space-y-6">
+                <div class="border-b border-gray-200 pb-6">
+                    <h3 class="font-bold text-lg mb-2">How accurate is the AI quoting?</h3>
+                    <p class="text-gray-500">QuoteSnap uses real Australian material prices and labour rates, updated monthly. It gets you 90%+ accurate — you just review and adjust before sending. Think of it as your apprentice doing the first draft.</p>
+                </div>
+                <div class="border-b border-gray-200 pb-6">
+                    <h3 class="font-bold text-lg mb-2">Do I need to be tech-savvy?</h3>
+                    <p class="text-gray-500">If you can take a photo and send a text, you can use QuoteSnap. We built it for tradies on the job site, not office workers. No training needed.</p>
+                </div>
+                <div class="border-b border-gray-200 pb-6">
+                    <h3 class="font-bold text-lg mb-2">What trades does it work for?</h3>
+                    <p class="text-gray-500">We're launching with support for plumbing, electrical, carpentry, landscaping, painting, building, cleaning, HVAC, and roofing. More trades coming based on demand.</p>
+                </div>
+                <div class="border-b border-gray-200 pb-6">
+                    <h3 class="font-bold text-lg mb-2">Is the Rate Calculator really free?</h3>
+                    <p class="text-gray-500">100% free, no catch. We built it because tradies deserve to know their market value. Use it as many times as you want.</p>
+                </div>
+                <div class="border-b border-gray-200 pb-6">
+                    <h3 class="font-bold text-lg mb-2">When does QuoteSnap launch?</h3>
+                    <p class="text-gray-500">We're targeting Q1 2026. Early waitlist members get first access and 50% off the launch price — locked in forever.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-12 px-4">
+        <div class="max-w-5xl mx-auto text-center">
+            <div class="flex items-center justify-center gap-2 mb-4">
+                <span class="text-2xl">📸</span>
+                <span class="text-xl font-bold text-white">Quote<span class="text-brand-400">Snap</span></span>
+            </div>
+            <p class="text-sm mb-4">Built in Brisbane, Australia 🇦🇺 for tradies who'd rather be on the tools than behind a desk.</p>
+            <p class="text-xs text-gray-500">© 2026 QuoteSnap. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ============ RATE DATA (AUD/hour) ============
+        const rateData = {
+            plumber:     { base: { low: 70, avg: 95, high: 140 }, cityMult: { sydney: 1.15, melbourne: 1.10, brisbane: 1.05, perth: 1.10, adelaide: 0.95, hobart: 0.90, darwin: 1.12, canberra: 1.08, regional: 0.88 }},
+            electrician: { base: { low: 75, avg: 100, high: 145 }, cityMult: { sydney: 1.15, melbourne: 1.10, brisbane: 1.05, perth: 1.12, adelaide: 0.95, hobart: 0.90, darwin: 1.15, canberra: 1.10, regional: 0.88 }},
+            carpenter:   { base: { low: 55, avg: 80, high: 120 }, cityMult: { sydney: 1.18, melbourne: 1.12, brisbane: 1.06, perth: 1.08, adelaide: 0.94, hobart: 0.88, darwin: 1.10, canberra: 1.05, regional: 0.85 }},
+            landscaper:  { base: { low: 45, avg: 70, high: 105 }, cityMult: { sydney: 1.12, melbourne: 1.08, brisbane: 1.04, perth: 1.06, adelaide: 0.92, hobart: 0.86, darwin: 1.08, canberra: 1.02, regional: 0.82 }},
+            painter:     { base: { low: 45, avg: 68, high: 100 }, cityMult: { sydney: 1.15, melbourne: 1.10, brisbane: 1.05, perth: 1.08, adelaide: 0.93, hobart: 0.87, darwin: 1.06, canberra: 1.04, regional: 0.83 }},
+            builder:     { base: { low: 65, avg: 90, high: 150 }, cityMult: { sydney: 1.20, melbourne: 1.15, brisbane: 1.08, perth: 1.12, adelaide: 0.96, hobart: 0.90, darwin: 1.14, canberra: 1.10, regional: 0.86 }},
+            cleaner:     { base: { low: 30, avg: 45, high: 70 },  cityMult: { sydney: 1.12, melbourne: 1.08, brisbane: 1.03, perth: 1.05, adelaide: 0.92, hobart: 0.85, darwin: 1.04, canberra: 1.00, regional: 0.80 }},
+            hvac:        { base: { low: 75, avg: 105, high: 155 }, cityMult: { sydney: 1.15, melbourne: 1.10, brisbane: 1.06, perth: 1.14, adelaide: 0.95, hobart: 0.90, darwin: 1.18, canberra: 1.08, regional: 0.88 }},
+            roofer:      { base: { low: 55, avg: 80, high: 125 }, cityMult: { sydney: 1.16, melbourne: 1.10, brisbane: 1.06, perth: 1.10, adelaide: 0.94, hobart: 0.88, darwin: 1.12, canberra: 1.06, regional: 0.85 }},
+        };
+
+        // Experience multiplier (years → rate multiplier)
+        function expMultiplier(years) {
+            if (years <= 2) return 0.85;
+            if (years <= 5) return 0.95;
+            if (years <= 10) return 1.05;
+            if (years <= 15) return 1.12;
+            if (years <= 20) return 1.18;
+            return 1.22;
+        }
+
+        // State
+        let selectedTrade = null;
+
+        // Trade button handling
+        document.querySelectorAll('.trade-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.trade-btn').forEach(b => {
+                    b.classList.remove('border-brand-500', 'bg-brand-50');
+                    b.classList.add('border-gray-200');
+                });
+                btn.classList.remove('border-gray-200');
+                btn.classList.add('border-brand-500', 'bg-brand-50');
+                selectedTrade = btn.dataset.trade;
+                checkForm();
+            });
+        });
+
+        // Experience slider
+        const expSlider = document.getElementById('experience');
+        const expValue = document.getElementById('expValue');
+        expSlider.addEventListener('input', () => {
+            expValue.textContent = expSlider.value;
+            checkForm();
+        });
+
+        // Form validation
+        function checkForm() {
+            const loc = document.getElementById('location').value;
+            const rate = document.getElementById('currentRate').value;
+            document.getElementById('calcBtn').disabled = !(selectedTrade && loc && rate);
+        }
+        document.getElementById('location').addEventListener('change', checkForm);
+        document.getElementById('currentRate').addEventListener('input', checkForm);
+
+        // Calculate
+        document.getElementById('calcForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!selectedTrade) return;
+
+            const loc = document.getElementById('location').value;
+            const years = parseInt(expSlider.value);
+            const currentRate = parseFloat(document.getElementById('currentRate').value);
+            const data = rateData[selectedTrade];
+            const mult = data.cityMult[loc] || 1.0;
+            const expMult = expMultiplier(years);
+
+            const low = Math.round(data.base.low * mult * expMult);
+            const avg = Math.round(data.base.avg * mult * expMult);
+            const high = Math.round(data.base.high * mult * expMult);
+
+            // Show results
+            document.getElementById('results').classList.remove('hidden');
+            document.getElementById('marketRange').textContent = `$${low} — $${high}/hr`;
+            document.getElementById('lowRate').textContent = `$${low}`;
+            document.getElementById('highRate').textContent = `$${high}`;
+
+            // Position marker
+            const range = high - low;
+            const position = Math.max(0, Math.min(100, ((currentRate - low) / range) * 100));
+            setTimeout(() => {
+                document.getElementById('rangeBar').style.width = '100%';
+                document.getElementById('yourMarker').style.left = `calc(${position}% - 12px)`;
+            }, 100);
+
+            // Percentile
+            let percentile;
+            if (currentRate <= low) percentile = Math.max(5, Math.round((currentRate / low) * 25));
+            else if (currentRate <= avg) percentile = 25 + Math.round(((currentRate - low) / (avg - low)) * 25);
+            else if (currentRate <= high) percentile = 50 + Math.round(((currentRate - avg) / (high - avg)) * 35);
+            else percentile = Math.min(99, 85 + Math.round(((currentRate - high) / (high * 0.2)) * 14));
+
+            document.getElementById('percentile').textContent = `${percentile}th`;
+
+            // Annual difference
+            const hoursPerYear = 1800; // ~37.5hr/week, 48 weeks
+            const annualDiff = Math.round((avg - currentRate) * hoursPerYear);
+            const annualEl = document.getElementById('annualDiff');
+            const labelEl = document.getElementById('annualLabel');
+            if (annualDiff > 0) {
+                annualEl.textContent = `+$${annualDiff.toLocaleString()}`;
+                annualEl.classList.remove('text-green-600');
+                annualEl.classList.add('text-red-600');
+                labelEl.textContent = 'you could be earning more';
+            } else {
+                annualEl.textContent = `+$${Math.abs(annualDiff).toLocaleString()}`;
+                annualEl.classList.remove('text-red-600');
+                annualEl.classList.add('text-green-600');
+                labelEl.textContent = 'above average — nice!';
+            }
+
+            // Verdict
+            const verdict = document.getElementById('verdict');
+            if (currentRate < low) {
+                verdict.className = 'rounded-2xl p-6 text-center mb-6 bg-red-50 border border-red-200';
+                verdict.innerHTML = `<div class="text-3xl mb-2">🚨</div><h4 class="font-bold text-red-800 text-lg">You're Undercharging</h4><p class="text-red-600 text-sm mt-1">You're charging below the market minimum for your trade, location, and experience. You're leaving serious money on the table.</p>`;
+            } else if (currentRate < avg) {
+                verdict.className = 'rounded-2xl p-6 text-center mb-6 bg-amber-50 border border-amber-200';
+                verdict.innerHTML = `<div class="text-3xl mb-2">⚠️</div><h4 class="font-bold text-amber-800 text-lg">Below Average — Room to Grow</h4><p class="text-amber-600 text-sm mt-1">You're in the game, but charging below average. A small rate increase could mean thousands more per year.</p>`;
+            } else if (currentRate <= high) {
+                verdict.className = 'rounded-2xl p-6 text-center mb-6 bg-green-50 border border-green-200';
+                verdict.innerHTML = `<div class="text-3xl mb-2">✅</div><h4 class="font-bold text-green-800 text-lg">Right on the Money</h4><p class="text-green-600 text-sm mt-1">Your rate is competitive for your trade, location, and experience. Keep doing what you're doing.</p>`;
+            } else {
+                verdict.className = 'rounded-2xl p-6 text-center mb-6 bg-blue-50 border border-blue-200';
+                verdict.innerHTML = `<div class="text-3xl mb-2">👑</div><h4 class="font-bold text-blue-800 text-lg">Premium Rate — You're Crushing It</h4><p class="text-blue-600 text-sm mt-1">You're charging above market rate. If you're staying busy, that means your reputation and quality justify the premium. Legend.</p>`;
+            }
+
+            // Tips
+            const tips = document.getElementById('tips');
+            const tipsList = [];
+            if (currentRate < avg) {
+                tipsList.push('Raise your rate by $5-10/hr — most customers won't even notice, but it adds up to thousands per year.');
+                tipsList.push('Stop giving "mates rates" to people you barely know. Your time has value.');
+            }
+            tipsList.push('Quote fast — the first tradie to quote wins 60% of jobs. Speed = money.');
+            tipsList.push('Use professional-looking quotes with your logo and ABN. It justifies a premium rate.');
+            if (years < 5) {
+                tipsList.push('Get more Google reviews — social proof lets newer tradies charge experienced rates.');
+            }
+            if (years >= 10) {
+                tipsList.push(`With ${years} years experience, you should be charging a premium. Don't compete on price — compete on trust.`);
+            }
+            tipsList.push('Track your quote-to-win ratio. If you're winning 80%+, your prices are too low.');
+            tips.innerHTML = tipsList.slice(0, 5).map(t => `<li class="flex items-start gap-2"><span class="mt-0.5">→</span><span>${t}</span></li>`).join('');
+
+            // Smooth scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            // Track in Plausible
+            if (window.plausible) {
+                plausible('Calculator Used', { props: { trade: selectedTrade, location: loc, experience: years } });
+            }
+        });
+
+        // Waitlist form
+        document.getElementById('waitlistForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('wlName').value;
+            const email = document.getElementById('wlEmail').value;
+            const trade = document.getElementById('wlTrade').value;
+
+            // Store in localStorage as fallback
+            const waitlistData = JSON.parse(localStorage.getItem('quotesnap_waitlist') || '[]');
+            waitlistData.push({ name, email, trade, timestamp: new Date().toISOString() });
+            localStorage.setItem('quotesnap_waitlist', JSON.stringify(waitlistData));
+
+            // Try to submit to Netlify Forms
+            try {
+                await fetch('/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({
+                        'form-name': 'waitlist',
+                        'name': name,
+                        'email': email,
+                        'trade': trade
+                    })
+                });
+            } catch (err) {
+                console.log('Form submission fallback:', err);
+            }
+
+            // Show success
+            document.getElementById('waitlistForm').classList.add('hidden');
+            document.getElementById('waitlistSuccess').classList.remove('hidden');
+
+            // Track
+            if (window.plausible) {
+                plausible('Waitlist Signup', { props: { trade: trade } });
+            }
+        });
+
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+
+    <!-- Netlify Forms (hidden for detection) -->
+    <form name="waitlist" netlify netlify-honeypot="bot-field" hidden>
+        <input name="bot-field">
+        <input name="name">
+        <input name="email">
+        <input name="trade">
+    </form>
+
+</body>
+</html>
