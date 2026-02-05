@@ -1,0 +1,20 @@
+{
+  "name": "quotesnap",
+  "version": "1.0.0",
+  "description": "Turn job photos into professional quotes in 60 seconds. Built for Australian tradies who waste hours every night typing up quotes.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/original-solutions/quotesnap.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/original-solutions/quotesnap/issues"
+  },
+  "homepage": "https://github.com/original-solutions/quotesnap#readme"
+}
